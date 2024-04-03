@@ -4,6 +4,9 @@
 
 
 
+# Define required libraries.
+
+
 
 #constants# Define program constants.
 # Open the defaults file and read the values into variables
@@ -98,3 +101,12 @@ while True:
     else:
         break
 
+# Write the default values back to the Defaults.dat file
+f = open('Defaluts.dat', 'w')
+f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
+f.write("{}\n".format(str(NEXT_DRIVER_NUMBER)))
+f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
+f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
+f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
+f.write("{}\n".format(str(HST_RATE)))
+f.close()
