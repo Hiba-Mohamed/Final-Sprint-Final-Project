@@ -39,7 +39,7 @@ def PrintCompanyProfitListing():
 def PrintDriverFinancialListing():
     pass
 
-def PrintCompanyOwnedCarsReport():
+def PrintCompanyCarsReport():
     while True:
         try:
             NewCar = input("Would ypu like to add a new car before printing comapny-owned cars listing? (Y/N): ").upper()
@@ -72,7 +72,7 @@ while True:
     print("5. Record Employee Payment.")
     print("6. Print Company Profit Listing. ")
     print("7. Print Driver Financial Listing. ")
-    print("8. Print Company-Owned Cars Info")
+    print("8. Print Cars Info")
     print("9. Quit Program. ")
     print()
 
@@ -110,7 +110,7 @@ while True:
         PrintDriverFinancialListing()
 
     elif choice == 8:
-        PrintCompanyOwnedCarsReport()
+        PrintCompanyCarsReport()
 
     else:
         break
