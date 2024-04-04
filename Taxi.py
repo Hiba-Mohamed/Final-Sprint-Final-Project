@@ -10,13 +10,13 @@
 
 #constants# Define program constants.
 # Open the defaults file and read the values into variables
-f = open('Defaluts.dat', 'r')
-NEXT_TRANSACTION_NUMBER = int(f.readline())  #143
-NEXT_DRIVER_NUMBER      = int(f.readline()) #1922 
-MONTHLY_STAND_FEE       = float(f.readline()) #175.00 
-DAILY_RENTAL_FEE        = float(f.readline()) #60.00
-WEEKLY_RENTAL_FEE       = float(f.readline()) #300.00
-HST_RATE                = float(f.readline()) #0.15
+f = open('Defaults.dat', 'r')
+NEXT_TRANSACTION_NUMBER = int(f.readline())    #143
+NEXT_DRIVER_NUMBER      = int(f.readline())    #1922 
+MONTHLY_STAND_FEE       = float(f.readline())  #175.00 
+DAILY_RENTAL_FEE        = float(f.readline())  #60.00
+WEEKLY_RENTAL_FEE       = float(f.readline())  #300.00
+HST_RATE                = float(f.readline())  #0.15
 
 def EnterNewEmployee():
     pass
@@ -40,7 +40,13 @@ def PrintDriverFinancialListing():
     pass
 
 def PrintCompanyOwnedCarsReport():
-    pass
+    while True:
+        try:
+            NewCar = input("Would ypu like to add a new car before printing comapny-owned cars listing? (Y/N): ").upper()
+            if NewCar != "Y" and NewCar != "N":
+                print("Data Entry Error:Pleaee type \"Y\" or \"N\"")
+        except:
+            print("Error occured")
 
 
 
@@ -102,7 +108,7 @@ while True:
         break
 
 # Write the default values back to the Defaults.dat file
-f = open('Defaluts.dat', 'w')
+f = open('Defaults.dat', 'w')
 f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
 f.write("{}\n".format(str(NEXT_DRIVER_NUMBER)))
 f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
