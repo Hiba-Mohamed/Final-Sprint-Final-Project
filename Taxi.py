@@ -18,6 +18,7 @@ DAILY_RENTAL_FEE        = float(f.readline())  #60.00
 WEEKLY_RENTAL_FEE       = float(f.readline())  #300.00
 HST_RATE                = float(f.readline())  #0.15
 
+
 def EnterNewEmployee():
     pass
 
@@ -48,12 +49,40 @@ def PrintCompanyCarsReport():
         except:
             print("Error occured")
         if NewCar == "Y":
-            # CarID = input("Enter car ID for the vehicle (0000000000): ")
+            # Read the last car ID from the file
+            with open('CompanyCars.dat', 'r') as file:
+                lines = file.readlines()
+                # this is the last line and the first entry with index 0 (the carID)
+                last_car_id = lines[-1].split()[0]
+    
+            # add 1 to the latest carID to make it the new car id then turn it to a string
+            new_car_id = str(int(last_car_id) + 1)
+
             CarMake = input("Enter the car's make (e.g. Ford): ").capitalize()
             CarModel = input("Enter the car's model (e.g. Corolla): ").capitalize()
             CarYear = int(input("Enter the car's year (e.g. 2016): "))
             CarLicensePlateNumber = input("Enter car's license plate number (e.g. ABC123 ): ").upper()
             CarType = input("Indicate if the car is business-owned or an employees own car (Type \"BO\" or \"EO\"): ").upper()
+
+            # Write the new car details including the new Car ID to the file
+            with open('CompanyCars.dat', 'a') as file:
+                file.write(f"{new_car_id} {CarMake} {CarModel} {CarYear} {CarLicensePlateNumber} {CarType}\n")
+
+            print("")
+            print("   Car ID    Car Make   Car Model   Car Year   Plate Number   Owned By")
+            print("-------------------------------------------------------------------------")
+            with open('CompanyCars.dat', 'r') as file:
+                for car in file:
+                # Split the car details by spaces
+                    car_details = car.strip().split()
+                    if car_details[-1] == "BO":
+                        car_details[-1] = "Business"
+                    else:
+                        car_details[-1] = "Employee"
+                # Print the formatted car details
+                    print("{:<12} {:<12} {:<12} {:<12} {:<10} {:<8}".format(*car_details))
+                    print("")
+
         else:
             print("")
             print("   Car ID    Car Make   Car Model   Car Year   Plate Number   Owned By")
@@ -86,7 +115,7 @@ while True:
     print("5. Record Employee Payment.")
     print("6. Print Company Profit Listing. ")
     print("7. Print Driver Financial Listing. ")
-    print("8. Print Cars Info")
+    print("8. Print Cars Information report")
     print("9. Quit Program. ")
     print()
 
