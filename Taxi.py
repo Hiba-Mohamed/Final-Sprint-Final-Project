@@ -44,9 +44,17 @@ def PrintCompanyOwnedCarsReport():
         try:
             NewCar = input("Would ypu like to add a new car before printing comapny-owned cars listing? (Y/N): ").upper()
             if NewCar != "Y" and NewCar != "N":
-                print("Data Entry Error:Pleaee type \"Y\" or \"N\"")
+                print("Data Entry Error: Please type \"Y\" or \"N\"")
         except:
             print("Error occured")
+        if NewCar == "Y":
+            # CarID = input("Enter car ID for the vehicle (0000000000): ")
+            CarMake = input("Enter the car's make (e.g. Ford): ").capitalize()
+            CarModel = input("Enter the car's model (e.g. Corolla): ").capitalize()
+            CarYear = int(input("Enter the car's year (e.g. 2016): "))
+            CarLicensePlateNumber = input("Enter car's license plate number (e.g. ABC123 ): ").upper()
+            CarType = input("Indicate if the car is business-owned or an employees own car (Type \"BO\" or \"EO\"): ").upper()
+        else:
 
 
 
