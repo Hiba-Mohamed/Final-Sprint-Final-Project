@@ -42,7 +42,7 @@ def PrintDriverFinancialListing():
 def PrintCompanyCarsReport():
     while True:
         try:
-            NewCar = input("Would ypu like to add a new car before printing comapny-owned cars listing? (Y/N): ").upper()
+            NewCar = input("Would ypu like to add a new car before printing comapny-owned cars listing? (Y/N) \"END\" when finished: ").upper()
             if NewCar != "Y" and NewCar != "N":
                 print("Data Entry Error: Please type \"Y\" or \"N\"")
         except:
@@ -55,8 +55,22 @@ def PrintCompanyCarsReport():
             CarLicensePlateNumber = input("Enter car's license plate number (e.g. ABC123 ): ").upper()
             CarType = input("Indicate if the car is business-owned or an employees own car (Type \"BO\" or \"EO\"): ").upper()
         else:
-
-
+            print("")
+            print("   Car ID    Car Make   Car Model   Car Year   Plate Number   Owned By")
+            print("-------------------------------------------------------------------------")
+            with open('CompanyCars.dat', 'r') as file:
+                for car in file:
+                # Split the car details by spaces
+                    car_details = car.strip().split()
+                    if car_details[-1] == "BO":
+                        car_details[-1] = "Business"
+                    else:
+                        car_details[-1] = "Employee"
+                # Print the formatted car details
+                    print("{:<12} {:<12} {:<12} {:<12} {:<10} {:<8}".format(*car_details))
+                    print("")
+        if NewCar == "END":
+            break
 
 
 # Main program
