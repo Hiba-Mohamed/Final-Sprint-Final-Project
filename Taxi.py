@@ -198,7 +198,7 @@ def EnterNewEmployee():
 
         NEXT_DRIVER_NUMBER += 1
         
-        Continue = input("Do you want to proceed with another policy (Y/N): ").capitalize()
+        Continue = input("To enter new driver's detail press Y: ").capitalize()
         if Continue == "Y":
             print("You are all set to enter new driver's details.")
             print()
