@@ -23,7 +23,10 @@ HST_RATE                = float(f.readline())  #0.15
 
 
 def EnterNewEmployee():
+<<<<<<< HEAD
+=======
     # Open the defaults file and read the values into variables
+>>>>>>> a26517d1b31d8dd3f83decf77272841f7424b41c
     f = open('Defaults.dat', 'r')
 
     NEXT_TRANSACTION_NUMBER = int(f.readline())   #143
@@ -34,7 +37,10 @@ def EnterNewEmployee():
     HST_RATE                = float(f.readline()) #0.15
 
     f.close()
+<<<<<<< HEAD
+=======
     
+>>>>>>> a26517d1b31d8dd3f83decf77272841f7424b41c
     while True:
     # Gather user inputs
     
@@ -207,7 +213,11 @@ def EnterNewEmployee():
 
         NEXT_DRIVER_NUMBER += 1
         
+<<<<<<< HEAD
+        Continue = input("Do you want to proceed with another policy (Y/N): ").capitalize()
+=======
         Continue = input("To enter new driver's detail press Y: ").capitalize()
+>>>>>>> a26517d1b31d8dd3f83decf77272841f7424b41c
         if Continue == "Y":
             print("You are all set to enter new driver's details.")
             print()
