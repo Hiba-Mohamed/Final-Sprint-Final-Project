@@ -146,8 +146,10 @@ def EnterNewEmployee():
             last_driver_number = lines[-1].split()[0]
             #to remove the comma at the end before coverting to int
             last_driver_number = last_driver_number[:-1]
+            last_driver_number = int(last_driver_number)
             # add 1 to the latest carID to make it the new car id then turn it to a string
-            new_driver_number = str(int(last_driver_number) + 1)
+            new_driver_number = str(last_driver_number + 1)
+            next_driver_number_default = str((last_driver_number + 2))
 
         # Display results
         print()
@@ -207,7 +209,7 @@ def EnterNewEmployee():
 
         f = open('Defaults.dat', 'w')
         f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
-        f.write("{}\n".format(str(new_driver_number)))
+        f.write("{}\n".format(str(next_driver_number_default)))
         f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
         f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
         f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
