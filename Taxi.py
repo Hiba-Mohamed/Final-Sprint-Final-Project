@@ -27,7 +27,7 @@ def EnterNewEmployee():
     f = open('Defaults.dat', 'r')
 
     NEXT_TRANSACTION_NUMBER = int(f.readline())   #143
-    NEXT_DRIVER_NUMBER      = int(f.readline())  #1922 
+    NEXT_DRIVER_NUMBER      = int(f.readline())   #1922 
     MONTHLY_STAND_FEE       = float(f.readline()) #175.00 
     DAILY_RENTAL_FEE        = float(f.readline()) #60.00
     WEEKLY_RENTAL_FEE       = float(f.readline()) #300.00
@@ -205,7 +205,14 @@ def EnterNewEmployee():
         time.sleep(1)  # To create the blinking effect
         sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
 
-        NEXT_DRIVER_NUMBER += 1
+        f = open('Defaults.dat', 'w')
+        f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
+        f.write("{}\n".format(str(new_driver_number)))
+        f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
+        f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
+        f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
+        f.write("{}\n".format(str(HST_RATE)))
+        f.close()
         
         Continue = input("To enter new driver's detail press Y: ").capitalize()
         if Continue == "Y":
@@ -215,13 +222,9 @@ def EnterNewEmployee():
             break
         
 
-    f = open('Defaults.dat', 'w')
-    f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
-    f.write("{}\n".format(str(NEXT_DRIVER_NUMBER)))
-    f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
-    f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
-    f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
-    f.write("{}\n".format(str(HST_RATE)))
+
+
+
 
 def EnterCompanyRevenue():
     pass
@@ -230,10 +233,37 @@ def EnterCompanyExpense():
     pass
 
 def TrackCarRentals():
-    pass
+    while True:
+        RentalId = input("Please enter the rental Id: ")
+        DriverNumber = input("Please enter the driver number: ")
+        StartDate = input("Please enter the start date: ")
+
+        break
 
 def RecordEmployeePayment():
-    pass
+    while True:
+        f = open('Payments', 'a')
+        # Read the last car ID from the file
+        with open("Payments", 'r') as file:
+            lines = file.readlines()
+            # this is the last line and the first entry with index 0 (the carID)
+            last_payment_Id = lines[-1].split()[0]
+            # add 1 to the latest carID to make it the new car id then turn it to a string
+            new_payment_Id = str(int(last_payment_Id) + 1)
+
+        DriverNumber = input("Please enter the driver number: ")
+        while True:
+            try:
+                PaymentDate = input("Enter driver's license expiry date (YYYY-MM-DD): ")
+                PaymentDate = datetime.datetime.strptime(PaymentDate, "%Y-%m-%d")
+            except:
+                print("Data Entry Error - Expiry date is not in a valid format.")
+            else:
+                break
+        PaymentAmount = float(input("Please enter the payment amount: "))
+        paymentReason = input("Please enter the reason for payment: ")
+        PaymentMethod = input("Please enter the payment method (Cash, Debit, or Visa): ")
+        break
 
 def PrintCompanyProfitListing():
     pass
@@ -299,6 +329,7 @@ def PrintCompanyCarsReport():
                 # Print the formatted car details
                     print("{:<12} {:<12} {:<12} {:<12} {:<10} {:<8}".format(*car_details))
                     print("")
+                
         if NewCar == "END":
             break
 
