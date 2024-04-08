@@ -216,10 +216,6 @@ def EnterNewEmployee():
     WriteDefaults(NEXT_TRANSACTION_NUMBER, NEXT_DRIVER_NUMBER, MONTHLY_STAND_FEE, DAILY_RENTAL_FEE, WEEKLY_RENTAL_FEE, HST_RATE)
         
 
-
-
-
-
 def EnterCompanyRevenue():
     pass
 
