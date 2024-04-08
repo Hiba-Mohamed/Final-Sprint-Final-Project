@@ -138,13 +138,22 @@ def EnterNewEmployee():
         HST = (MonthlyFee + TotalRentalFee) * HST_RATE
 
         TotalFee = MonthlyFee + TotalRentalFee + HST
+        f = open('Employee.dat', 'a')
+        # Read the last car ID from the file
+        with open("Employee.dat", 'r') as file:
+            lines = file.readlines()
+            # this is the last line and the first entry with index 0 (the carID)
+            last_driver_number = lines[-1].split()[0]
+            last_driver_number = last_driver_number[:-1]
+            # add 1 to the latest carID to make it the new car id then turn it to a string
+            new_driver_number = str(int(last_driver_number) + 1)
 
         # Display results
         print()
         print(f"            HAB TAXI SERVICES - EMPLOYEE DETAIL")
         print(f"---------------------------------------------------------")
         print()
-        print(f" Driver ID:                 {NEXT_DRIVER_NUMBER}")
+        print(f" Driver ID:                 {new_driver_number}")
         print(f" Employee Name:             {EmployeeName}")
         print(f" Employee Address:          {StAddress}")
         print(f"                            {City + "," + " " + Prov + "," + " " + PostCode}")
@@ -175,9 +184,8 @@ def EnterNewEmployee():
             sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
             time.sleep(.3)
         
-        f = open('Employee.dat', 'a')
 
-        f.write("{}, ".format(str(NEXT_DRIVER_NUMBER)))
+        f.write("{}, ".format(str(new_driver_number)))
         f.write("{}, ".format(str(EmployeeName)))
         f.write("{}, ".format(EmployeeAdd))
         f.write("{}, ".format(EmployeePhone))
