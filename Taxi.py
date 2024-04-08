@@ -12,29 +12,35 @@ import sys
 
 
 #constants# Define program constants.
+
+TODAY = datetime.datetime.now()
 # Open the defaults file and read the values into variables
-f = open('Defaults.dat', 'r')
-NEXT_TRANSACTION_NUMBER = int(f.readline())    #143
-NEXT_DRIVER_NUMBER      = int(f.readline())    #1922 
-MONTHLY_STAND_FEE       = float(f.readline())  #175.00 
-DAILY_RENTAL_FEE        = float(f.readline())  #60.00
-WEEKLY_RENTAL_FEE       = float(f.readline())  #300.00
-HST_RATE                = float(f.readline())  #0.15
+def ReadDefaults():
 
-
-def EnterNewEmployee():
-    # Open the defaults file and read the values into variables
     f = open('Defaults.dat', 'r')
 
     NEXT_TRANSACTION_NUMBER = int(f.readline())   #143
-    NEXT_DRIVER_NUMBER      = int(f.readline())   #1922 
-    MONTHLY_STAND_FEE       = float(f.readline()) #175.00 
-    DAILY_RENTAL_FEE        = float(f.readline()) #60.00
-    WEEKLY_RENTAL_FEE       = float(f.readline()) #300.00
-    HST_RATE                = float(f.readline()) #0.15
+    NEXT_DRIVER_NUMBER = int(f.readline())        #1922 
+    MONTHLY_STAND_FEE = float(f.readline())       #175.00 
+    DAILY_RENTAL_FEE = float(f.readline())       #60.00
+    WEEKLY_RENTAL_FEE = float(f.readline())      #300.00
+    HST_RATE = float(f.readline())
 
-    f.close()
+    return NEXT_TRANSACTION_NUMBER, NEXT_DRIVER_NUMBER, MONTHLY_STAND_FEE, DAILY_RENTAL_FEE, WEEKLY_RENTAL_FEE, HST_RATE
+
+def WriteDefaults(NEXT_TRANSACTION_NUMBER, NEXT_DRIVER_NUMBER, MONTHLY_STAND_FEE, DAILY_RENTAL_FEE, WEEKLY_RENTAL_FEE, HST_RATE):
+
+    f = open('Defaults.dat', 'w')
     
+    f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
+    f.write("{}\n".format(str(NEXT_DRIVER_NUMBER)))
+    f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
+    f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
+    f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
+    f.write("{}\n".format(str(HST_RATE)))
+
+def EnterNewEmployee():
+    NEXT_TRANSACTION_NUMBER, NEXT_DRIVER_NUMBER, MONTHLY_STAND_FEE, DAILY_RENTAL_FEE, WEEKLY_RENTAL_FEE, HST_RATE = ReadDefaults()
     while True:
     # Gather user inputs
     
@@ -90,7 +96,7 @@ def EnterNewEmployee():
         EmployeePhone = "(" + PhoneNum[0:3] + ")" + " " + PhoneNum[3:6] + "-" + PhoneNum[6:11]
 
         # Employee's License and Insurance Detail
-        LicenseNum = input("Enter driver's license number: ")
+        LicenseNum = input("Enter driver's license number: ").capitalize()
         
         while True:
             try:
@@ -138,25 +144,15 @@ def EnterNewEmployee():
         HST = (MonthlyFee + TotalRentalFee) * HST_RATE
 
         TotalFee = MonthlyFee + TotalRentalFee + HST
-        f = open('Employee.dat', 'a')
-        # Read the last car ID from the file
-        with open("Employee.dat", 'r') as file:
-            lines = file.readlines()
-            # this is the last line and the first entry with index 0 (the carID)
-            last_driver_number = lines[-1].split()[0]
-            #to remove the comma at the end before coverting to int
-            last_driver_number = last_driver_number[:-1]
-            last_driver_number = int(last_driver_number)
-            # add 1 to the latest carID to make it the new car id then turn it to a string
-            new_driver_number = str(last_driver_number + 1)
-            next_driver_number_default = str((last_driver_number + 2))
+
+        NEXT_DRIVER_NUMBER += 1
 
         # Display results
         print()
         print(f"            HAB TAXI SERVICES - EMPLOYEE DETAIL")
         print(f"---------------------------------------------------------")
         print()
-        print(f" Driver ID:                 {new_driver_number}")
+        print(f" Driver ID:                 {NEXT_DRIVER_NUMBER - 1}")
         print(f" Employee Name:             {EmployeeName}")
         print(f" Employee Address:          {StAddress}")
         print(f"                            {City + "," + " " + Prov + "," + " " + PostCode}")
@@ -187,18 +183,20 @@ def EnterNewEmployee():
             sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
             time.sleep(.3)
         
+        f = open('Employee.dat', 'a')
 
-        f.write("{}, ".format(str(new_driver_number)))
+        f.write("{}, ".format(str(NEXT_DRIVER_NUMBER -1)))
         f.write("{}, ".format(str(EmployeeName)))
-        f.write("{}, ".format(EmployeeAdd))
-        f.write("{}, ".format(EmployeePhone))
-        f.write("{}, ".format(LicenseNum))
+        f.write("{}, ".format(str(EmployeeAdd)))
+        f.write("{}, ".format(str(EmployeePhone)))
+        f.write("{}, ".format(str(LicenseNum)))
         f.write("{}, ".format(FV.FDateM(LicenseExpiryDate)))
         f.write("{}, ".format(str(InsuranceCompany)))
         f.write("{}, ".format(str(PolicyNumber)))
         f.write("{}, ".format(str(CarType)))
         f.write("{}, ".format(str(MonthlyFee)))
-        f.write("{}\n".format(str(TotalRentalFee)))
+        f.write("{}, ".format(str(TotalRentalFee)))
+        f.write("{}\n".format(str(BalDue)))
     
         f.close()
 
@@ -207,21 +205,15 @@ def EnterNewEmployee():
         time.sleep(1)  # To create the blinking effect
         sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
 
-        f = open('Defaults.dat', 'w')
-        f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
-        f.write("{}\n".format(str(next_driver_number_default)))
-        f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
-        f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
-        f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
-        f.write("{}\n".format(str(HST_RATE)))
-        f.close()
-        
-        Continue = input("To enter new driver's detail press Y: ").capitalize()
+        Continue = input("Do you want to proceed with another policy (Y/N): ").capitalize()
         if Continue == "Y":
             print("You are all set to enter new driver's details.")
             print()
         else:
             break
+
+    # Write updated values back to Defaults.dat
+    WriteDefaults(NEXT_TRANSACTION_NUMBER, NEXT_DRIVER_NUMBER, MONTHLY_STAND_FEE, DAILY_RENTAL_FEE, WEEKLY_RENTAL_FEE, HST_RATE)
         
 
 
@@ -392,12 +384,3 @@ while True:
     else:
         break
 
-# Write the default values back to the Defaults.dat file
-f = open('Defaults.dat', 'w')
-f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
-f.write("{}\n".format(str(NEXT_DRIVER_NUMBER)))
-f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
-f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
-f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
-f.write("{}\n".format(str(HST_RATE)))
-f.close()
