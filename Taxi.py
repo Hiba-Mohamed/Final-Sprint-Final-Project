@@ -144,6 +144,7 @@ def EnterNewEmployee():
             lines = file.readlines()
             # this is the last line and the first entry with index 0 (the carID)
             last_driver_number = lines[-1].split()[0]
+            #to remove the comma at the end before coverting to int
             last_driver_number = last_driver_number[:-1]
             # add 1 to the latest carID to make it the new car id then turn it to a string
             new_driver_number = str(int(last_driver_number) + 1)
