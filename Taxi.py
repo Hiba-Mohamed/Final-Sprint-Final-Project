@@ -232,10 +232,11 @@ def TrackCarRentals():
 
 def RecordEmployeePayment():
     while True:
-        f = open('Payments', 'a')
+        f = open('Payments.dat', 'a')
         # Read the last car ID from the file
-        with open("Payments", 'r') as file:
+        with open("Payments.dat", 'r') as file:
             lines = file.readlines()
+            print(lines)
             # this is the last line and the first entry with index 0 (the carID)
             last_payment_Id = lines[-1].split()[0]
             # add 1 to the latest carID to make it the new car id then turn it to a string
@@ -244,16 +245,32 @@ def RecordEmployeePayment():
         DriverNumber = input("Please enter the driver number: ")
         while True:
             try:
-                PaymentDate = input("Enter driver's license expiry date (YYYY-MM-DD): ")
+                PaymentDate = input("Enter payment date (YYYY-MM-DD): ")
                 PaymentDate = datetime.datetime.strptime(PaymentDate, "%Y-%m-%d")
             except:
-                print("Data Entry Error - Expiry date is not in a valid format.")
+                print("Data Entry Error - Payment date is not in a valid format.")
             else:
                 break
         PaymentAmount = float(input("Please enter the payment amount: "))
         paymentReason = input("Please enter the reason for payment: ")
         PaymentMethod = input("Please enter the payment method (Cash, Debit, or Visa): ")
-        break
+
+        with open("Payments.dat", 'a') as file:
+            file.write(f"{new_payment_Id} {DriverNumber} {PaymentDate} {PaymentAmount} {paymentReason} {PaymentMethod}\n")
+        
+        print()
+        print("Payment record successfully saved ...", end='\r')
+        time.sleep(1)  # To create the blinking effect
+        sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
+        f.close()
+
+        Continue = input("Would you like to record another payment (Y/N): ").upper()
+        if Continue == "Y":
+            print("You are all set to enter new payment details.")
+            print()
+        else:
+            break
+        
 
 def PrintCompanyProfitListing():
     pass
@@ -263,6 +280,7 @@ def PrintDriverFinancialListing():
 
 def PrintCompanyCarsReport():
     while True:
+        f = open('CompanyCars.dat', 'a')
         try:
             NewCar = input("Would ypu like to add a new car before printing comapny-owned cars listing? (Y/N) \"END\" when finished: ").upper()
             if NewCar != "Y" and NewCar != "N":
@@ -303,6 +321,7 @@ def PrintCompanyCarsReport():
                 # Print the formatted car details
                     print("{:<12} {:<12} {:<12} {:<12} {:<10} {:<8}".format(*car_details))
                     print("")
+            
 
         else:
             print("")
@@ -319,7 +338,7 @@ def PrintCompanyCarsReport():
                 # Print the formatted car details
                     print("{:<12} {:<12} {:<12} {:<12} {:<10} {:<8}".format(*car_details))
                     print("")
-                
+            f.close()  
         if NewCar == "END":
             break
 
