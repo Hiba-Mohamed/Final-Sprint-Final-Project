@@ -273,8 +273,32 @@ def RecordEmployeePayment():
         
 
 def PrintCompanyProfitListing():
-    pass
-
+    print("-------------------------------------------------------------------------------------")
+    print("               HAB Taxi Services Profit Listing Report          ")
+    print("-------------------------------------------------------------------------------------")
+    print(" Start Date: XX-XX-XXXX                                        End Date: XX-XX-XXXX  ")
+    print("-------------------------------------------------------------------------------------")
+    print()
+    print("                                         Revenues")
+    print(" Transaction    Transaction     Transaction     Transaction       HST        Total  ")
+    print("     ID	          Date	         Amount	       Description  ")
+    print("-------------------------------------------------------------------------------------")
+    print("-------------------------------------------------------------------------------------")
+    print("Total Renenues:")
+    print("-------------------------------------------------------------------------------------")
+    print()
+    print()
+    print("                                         Revenues")
+    print(" Invoice      Transaction     Transaction       Transaction       HST        Total  ")
+    print("    ID	          Date	         Amount	       Description  ")
+    print("-------------------------------------------------------------------------------------")
+    print("-------------------------------------------------------------------------------------")
+    print("Total Expenses:")
+    print("-------------------------------------------------------------------------------------")
+    print("-------------------------------------------------------------------------------------")
+    print("Profit (Loss):")
+    print("-------------------------------------------------------------------------------------")
+    
 def PrintDriverFinancialListing():
     pass
 
