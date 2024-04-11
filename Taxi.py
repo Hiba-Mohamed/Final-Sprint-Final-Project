@@ -224,10 +224,6 @@ def EnterCompanyExpense():
 
 def TrackCarRentals():
     while True:
-        RentalId = input("Please enter the rental Id: ")
-        DriverNumber = input("Please enter the driver number: ")
-        StartDate = input("Please enter the start date: ")
-
         break
 
 def RecordEmployeePayment():
@@ -273,30 +269,51 @@ def RecordEmployeePayment():
         
 
 def PrintCompanyProfitListing():
-    print("-------------------------------------------------------------------------------------")
-    print("                       HAB Taxi Services Profit Listing Report          ")
-    print("-------------------------------------------------------------------------------------")
-    print(" Start Date: XX-XX-XXXX                                        End Date: XX-XX-XXXX  ")
-    print("-------------------------------------------------------------------------------------")
+    # open required files:
+    f = open('Revenue.dat', 'a')
+    f = open('Expenses.dat', 'a')
+
+    # Read the last car ID from the file
+    with open('Revenue.dat', 'r') as file:
+        Revenuelines = file.readlines()
+    # read the start date
+        StartDate= Revenuelines[0].split()[1]
+        StartDate = StartDate[:-1]
+    # read the end date
+        EndDate = Revenuelines[-1].split()[1]
+        EndDate = EndDate[:-1]
+
+    
+
+    print(f"-------------------------------------------------------------------------------------")
+    print(f"                       HAB Taxi Services Profit Listing Report          ")
+    print(f"-------------------------------------------------------------------------------------")
+    print(f" Start Date: {StartDate}                                       End Date: {EndDate}  ")
+    print(f"-------------------------------------------------------------------------------------")
+    print(f)
+    print(f"                                         Revenues")
+    print(f" Transaction    Transaction     Transaction     Transaction       HST        Total  ")
+    print(f"     ID	          Date	         Amount	       Description  ")
+    print(f"-------------------------------------------------------------------------------------")
+    for line in Revenuelines:
+        transaction_id, transaction_date, transaction_description, driver_number, transaction_amount, hst, total = line.strip().split(',')
+
+
+        print("    {:<6}    {:<10}     {:>9}   {:<19} {:>9}   {:>9}".format(transaction_id, transaction_date, transaction_amount, transaction_description, hst, total))
+    print(f"-------------------------------------------------------------------------------------")
+    print(f"Total Renenues:                                                                      ")
+    print(f"-------------------------------------------------------------------------------------")
     print()
-    print("                                         Revenues")
-    print(" Transaction    Transaction     Transaction     Transaction       HST        Total  ")
-    print("     ID	          Date	         Amount	       Description  ")
-    print("-------------------------------------------------------------------------------------")
-    print("-------------------------------------------------------------------------------------")
-    print("Total Renenues:                                                                      ")
-    print("-------------------------------------------------------------------------------------")
-    print()
-    print("                                         Expenses")
-    print(" Invoice      Transaction     Transaction       Transaction       HST        Total  ")
-    print("    ID	          Date	         Amount	       Description  ")
-    print("-------------------------------------------------------------------------------------")
-    print("-------------------------------------------------------------------------------------")
-    print("Total Expenses:                                                                      ")
-    print("-------------------------------------------------------------------------------------")
-    print("-------------------------------------------------------------------------------------")
-    print("Profit (Loss):")
-    print("-------------------------------------------------------------------------------------")
+    print(f"                                         Expenses")
+    print(f" Invoice      Transaction     Transaction       Transaction       HST        Total  ")
+    print(f"    ID	          Date	         Amount	       Description  ")
+    print(f"-------------------------------------------------------------------------------------")
+    print(f"-------------------------------------------------------------------------------------")
+    print(f"Total Expenses:                                                                      ")
+    print(f"-------------------------------------------------------------------------------------")
+    print(f"-------------------------------------------------------------------------------------")
+    print(f"Profit (Loss):")
+    print(f"-------------------------------------------------------------------------------------")
     
 def PrintDriverFinancialListing():
     pass
