@@ -296,6 +296,7 @@ def PrintCompanyProfitListing():
 
     # Total Revenue cal
         total_revenue = 0
+        total_expense = 0
     print("")
     print(f"-------------------------------------------------------------------------------------------")
     print(f"                       HAB Taxi Services Profit Listing Report          ")
@@ -312,25 +313,29 @@ def PrintCompanyProfitListing():
         total = float(total.strip())
         total_revenue += total
 
-        print("    {:<6}    {:<10}   {:>9}      {:<25} {:>9}   {:>9}".format(transaction_id, transaction_date, transaction_amount, transaction_description, hst, total))
+        print("    {:<6}    {:<10}   {:>9}      {:<25} {:>9}   {:,.2f}".format(transaction_id, transaction_date, transaction_amount, transaction_description, hst, total))
     print(f"-------------------------------------------------------------------------------------------")
     print(f"Total Renenues:                                                           {FV.FDollar2(total_revenue):>9}")
     print(f"-------------------------------------------------------------------------------------------")
     print()
     print(f"                                         Expenses")
-    print(f" Invoice      Transaction     Transaction       Transaction              HST       Total  ")
-    print(f"    ID	          Date	         Amount	       Description  ")
+    print(f" Invoice       Transaction     Transaction       Transaction              HST       Total  ")
+    print(f"    ID	          Date	         Amount	         Description  ")
     print(f"-------------------------------------------------------------------------------------------")
     for line in ExpenseLines:
         invoice_id, expense_transaction_date, driver_number, item_number, description, cost, quantity, sub_total, expense_hst, expense_total = line.strip().split(',')
-        print("    {:<6}    {:<10}   {:>9}      {:<25} {:>9}   {:>9}".format(invoice_id, expense_transaction_date, sub_total, description, expense_hst, expense_total))
+        expense_total = float(expense_total.strip())
+        total_expense += expense_total
+        print("    {:<6}    {:<10}   {:>9}      {:<25}  {:>9}  {:>9,.2f}".format(invoice_id, expense_transaction_date, sub_total, description, expense_hst, expense_total))
+    print(f"-------------------------------------------------------------------------------------------")
+    print(f"Total Expenses:                                                            {FV.FDollar2(total_expense):>9}")
+    print(f"-------------------------------------------------------------------------------------------")
+    profit = total_revenue - total_expense
+    print(f"Profit (Loss):                                                             {FV.FDollar2(profit):>9}")
+    print(f"-------------------------------------------------------------------------------------------")
+    print(f"-------------------------------------------------------------------------------------------")
+    print("")
 
-    print(f"-------------------------------------------------------------------------------------------")
-    print(f"Total Expenses:                                                                      ")
-    print(f"-------------------------------------------------------------------------------------------")
-    print(f"-------------------------------------------------------------------------------------------")
-    print(f"Profit (Loss):")
-    print(f"-------------------------------------------------------------------------------------------")
     
 def PrintDriverFinancialListing():
     pass
