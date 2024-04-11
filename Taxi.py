@@ -271,9 +271,8 @@ def RecordEmployeePayment():
 def PrintCompanyProfitListing():
     # open required files:
     f = open('Revenue.dat', 'a')
-    f = open('Expenses.dat', 'a')
+    e = open('Expenses.dat', 'a')
 
-    # Read the last car ID from the file
     with open('Revenue.dat', 'r') as file:
         Revenuelines = file.readlines()
     # read the start date
@@ -283,37 +282,55 @@ def PrintCompanyProfitListing():
         EndDate = Revenuelines[-1].split()[1]
         EndDate = EndDate[:-1]
 
-    
+    # Total Revenue cal
+        total_revenue = 0
 
-    print(f"-------------------------------------------------------------------------------------")
+    with open('Expenses.dat', 'r') as file:
+        ExpenseLines = file.readlines()
+    # read the start date
+        ExpenseStartDate= ExpenseLines[0].split()[1]
+        ExpenseStartDate = ExpenseStartDate[:-1]
+    # read the end date
+        ExpenseEndDate = ExpenseLines[-1].split()[1]
+        ExpenseEndDate = ExpenseEndDate[:-1]
+
+    # Total Revenue cal
+        total_revenue = 0
+    print("")
+    print(f"-------------------------------------------------------------------------------------------")
     print(f"                       HAB Taxi Services Profit Listing Report          ")
-    print(f"-------------------------------------------------------------------------------------")
+    print(f"-------------------------------------------------------------------------------------------")
     print(f" Start Date: {StartDate}                                       End Date: {EndDate}  ")
-    print(f"-------------------------------------------------------------------------------------")
-    print(f)
+    print(f"-------------------------------------------------------------------------------------------")
+    print("")
     print(f"                                         Revenues")
-    print(f" Transaction    Transaction     Transaction     Transaction       HST        Total  ")
-    print(f"     ID	          Date	         Amount	       Description  ")
-    print(f"-------------------------------------------------------------------------------------")
+    print(f" Transaction   Transaction     Transaction       Transaction              HST       Total  ")
+    print(f"    ID	          Date	         Amount	         Description  ")
+    print(f"-------------------------------------------------------------------------------------------")
     for line in Revenuelines:
         transaction_id, transaction_date, transaction_description, driver_number, transaction_amount, hst, total = line.strip().split(',')
+        total = float(total.strip())
+        total_revenue += total
 
-
-        print("    {:<6}    {:<10}     {:>9}   {:<19} {:>9}   {:>9}".format(transaction_id, transaction_date, transaction_amount, transaction_description, hst, total))
-    print(f"-------------------------------------------------------------------------------------")
-    print(f"Total Renenues:                                                                      ")
-    print(f"-------------------------------------------------------------------------------------")
+        print("    {:<6}    {:<10}   {:>9}      {:<25} {:>9}   {:>9}".format(transaction_id, transaction_date, transaction_amount, transaction_description, hst, total))
+    print(f"-------------------------------------------------------------------------------------------")
+    print(f"Total Renenues:                                                           {FV.FDollar2(total_revenue):>9}")
+    print(f"-------------------------------------------------------------------------------------------")
     print()
     print(f"                                         Expenses")
-    print(f" Invoice      Transaction     Transaction       Transaction       HST        Total  ")
+    print(f" Invoice      Transaction     Transaction       Transaction              HST       Total  ")
     print(f"    ID	          Date	         Amount	       Description  ")
-    print(f"-------------------------------------------------------------------------------------")
-    print(f"-------------------------------------------------------------------------------------")
+    print(f"-------------------------------------------------------------------------------------------")
+    for line in ExpenseLines:
+        invoice_id, expense_transaction_date, driver_number, item_number, description, cost, quantity, sub_total, expense_hst, expense_total = line.strip().split(',')
+        print("    {:<6}    {:<10}   {:>9}      {:<25} {:>9}   {:>9}".format(invoice_id, expense_transaction_date, sub_total, description, expense_hst, expense_total))
+
+    print(f"-------------------------------------------------------------------------------------------")
     print(f"Total Expenses:                                                                      ")
-    print(f"-------------------------------------------------------------------------------------")
-    print(f"-------------------------------------------------------------------------------------")
+    print(f"-------------------------------------------------------------------------------------------")
+    print(f"-------------------------------------------------------------------------------------------")
     print(f"Profit (Loss):")
-    print(f"-------------------------------------------------------------------------------------")
+    print(f"-------------------------------------------------------------------------------------------")
     
 def PrintDriverFinancialListing():
     pass
