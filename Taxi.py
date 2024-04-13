@@ -303,8 +303,6 @@ def PrintCompanyProfitListing():
     print(f"                       HAB Taxi Services Profit Listing Report          ")
     print(f"-------------------------------------------------------------------------------------------")
     print(f" Start Date: {StartDate}                                       End Date: {EndDate}  ")
-    print(f"-------------------------------------------------------------------------------------------")
-    print("")
     print(f"                                         Revenues")
     print(f" Transaction   Transaction     Transaction       Transaction              HST       Total  ")
     print(f"    ID	          Date	         Amount	         Description  ")
@@ -318,14 +316,14 @@ def PrintCompanyProfitListing():
     print(f"-------------------------------------------------------------------------------------------")
     print(f"Total Renenues:                                                           {FV.FDollar2(total_revenue):>9}")
     print(f"-------------------------------------------------------------------------------------------")
-    print()
+    print(f" Start Date: {ExpenseStartDate}                                       End Date: {ExpenseEndDate}  ")
     print(f"                                         Expenses")
     print(f" Invoice       Transaction     Transaction       Transaction              HST       Total  ")
     print(f"    ID	          Date	         Amount	         Description  ")
     print(f"-------------------------------------------------------------------------------------------")
     for line in ExpenseLines:
         invoice_id, expense_transaction_date, driver_number, item_number, description, cost, quantity, sub_total, expense_hst, expense_total = line.strip().split(',')
-        expense_total = float(expense_total.strip())
+        expense_total = float(expense_total)
         total_expense += expense_total
         print("    {:<6}    {:<10}   {:>9}      {:<25}  {:>9}  {:>9,.2f}".format(invoice_id, expense_transaction_date, sub_total, description, expense_hst, expense_total))
     print(f"-------------------------------------------------------------------------------------------")
@@ -333,7 +331,6 @@ def PrintCompanyProfitListing():
     print(f"-------------------------------------------------------------------------------------------")
     profit = total_revenue - total_expense
     print(f"Profit (Loss):                                                             {FV.FDollar2(profit):>9}")
-    print(f"-------------------------------------------------------------------------------------------")
     print(f"-------------------------------------------------------------------------------------------")
     print("")
 
