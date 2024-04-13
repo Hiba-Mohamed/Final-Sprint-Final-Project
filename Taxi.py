@@ -327,10 +327,28 @@ def PrintCompanyProfitListing():
         total_expense += expense_total
         print("    {:<6}    {:<10}   {:>9}      {:<25}  {:>9}  {:>9,.2f}".format(invoice_id, expense_transaction_date, sub_total, description, expense_hst, expense_total))
     print(f"-------------------------------------------------------------------------------------------")
-    print(f"Total Expenses:                                                            {FV.FDollar2(total_expense):>9}")
+    print(f" Total Expenses:                                                            {FV.FDollar2(total_expense):>9}")
     print(f"-------------------------------------------------------------------------------------------")
     profit = total_revenue - total_expense
-    print(f"Profit (Loss):                                                             {FV.FDollar2(profit):>9}")
+    
+    #  unique months from the revenue data
+    numberOfRevenueMonths = set(line.split(',')[1].split('-')[1] for line in Revenuelines)
+    # determine how many
+    numberOfRevenueMonths = len(numberOfRevenueMonths)
+
+
+    #  unique months from the revenue data
+    numberOfExpenseMonths = set(line.split(',')[1].split('-')[1] for line in ExpenseLines)
+    # determine how many
+    numberOfExpenseMonths = len(numberOfExpenseMonths) 
+    AverageMonthlyRevenue = total_revenue / numberOfRevenueMonths
+    AverageMonthlyRevenue = float(AverageMonthlyRevenue)
+    AverageMonthlyExpense = total_expense / numberOfExpenseMonths
+    AverageMonthlyExpense = float(AverageMonthlyExpense)
+    AverageMonthlyProfit = AverageMonthlyRevenue - AverageMonthlyExpense
+    AverageMonthlyProfit = float(AverageMonthlyProfit)
+    print(f" Profit (Loss):            {FV.FDollar2(profit):>9}                 Average monthly Profit:   {FV.FDollar2(AverageMonthlyProfit):>9} ")
+    print(f" Average monthly expense:  {FV.FDollar2(AverageMonthlyExpense):>9}                 Average monthly Revenue:  {FV.FDollar2(AverageMonthlyRevenue):>9}")
     print(f"-------------------------------------------------------------------------------------------")
     print("")
 
