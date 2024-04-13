@@ -404,9 +404,50 @@ def PrintCompanyCarsReport():
         if NewCar == "END":
             break
 
+def AutomaticCharge():
+    # read employee.dat file to get employees who own their own car
+    employees = open("employee.dat", "r")
+    owned_counter = 0  # add up number of owned cars just in case we need to use this number
+    emp_list = []
+    for employee in employees:   # split each line of file into a list
+        entryLst = employee.split(",")
+        if entryLst[11] == "O":
+            owned_counter += 1
+            emp_list.append(entryLst[3])   # append each employee number to list of owned-car employees
+    employees.close()
+
+    # get last transaction number so we can create new trans numbers
+    revenue = open("revenue.dat", "r")
+    for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
+        entryLst = entry.split(",")
+        last_trans_num = int(entryLst[0])
+    transaction_number = last_trans_num + 1
+    revenue.close()
+
+    # open revenue.dat in append mode, add required number of entries to file 
+    f = open("revenue.dat", "a")
+    for i in range(len(emp_list)):        # for each employee w own car
+        revenue_entry_list = [            # create a list of required info for each entry
+            transaction_number,
+            curr_date,
+            "Monthly Stand Fees",
+            emp_list[i],
+            175.00,
+            26.25,
+            201.25
+        ]
+        transaction_number += 1        # increment trans number
+        for i in range(len(revenue_entry_list)):        # this for loop adds commas between each item
+            f.write("{}, ".format(str(revenue_entry_list[i])))
+        f.write("{}\n".format(str(revenue_entry_list[len(revenue_entry_list) - 1])))  # break to new line
 
 # Main program
 while True:
+    curr_date = datetime.datetime.today()
+    curr_date = curr_date.strftime("%Y-%m-%d")
+    if curr_date.day == 1:
+        AutomaticCharge()
+        
     print()
     print("       HAB Taxi Services ")
     print("     Company Services System")
@@ -460,4 +501,3 @@ while True:
 
     else:
         break
-
