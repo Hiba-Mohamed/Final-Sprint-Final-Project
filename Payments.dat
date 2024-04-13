@@ -1,1 +1,6 @@
-100001 1923 2023-10-10 00:00:00 234.21 stand fees cash
+100001, 1923, 2020-10-10, 339.00, Weekly stand fees, Cash
+100002, 1905, 2020-10-12, 227.50, Monthly stand fees, Debit
+100003, 1910, 2020-10-15, 69.00, Daily rental fee, Visa
+100004, 1915, 2020-10-20, 339.00, Weekly rental fee, Cash
+100005, 1912, 2020-10-22, 227.50, Monthly stand fees, Cash
+100006, 1908, 2020-10-25, 69.00, Daily rental fee, Debit

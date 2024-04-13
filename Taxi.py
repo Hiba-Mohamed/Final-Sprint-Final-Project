@@ -236,23 +236,24 @@ def RecordEmployeePayment():
             # this is the last line and the first entry with index 0 (the carID)
             last_payment_Id = lines[-1].split()[0]
             # add 1 to the latest carID to make it the new car id then turn it to a string
-            new_payment_Id = str(int(last_payment_Id) + 1)
+            new_payment_Id = str(int(last_payment_Id[:-1]) + 1)
 
         DriverNumber = input("Please enter the driver number: ")
         while True:
             try:
                 PaymentDate = input("Enter payment date (YYYY-MM-DD): ")
                 PaymentDate = datetime.datetime.strptime(PaymentDate, "%Y-%m-%d")
+                PaymentDate = FV.FDateS(PaymentDate)
             except:
                 print("Data Entry Error - Payment date is not in a valid format.")
             else:
                 break
         PaymentAmount = float(input("Please enter the payment amount: "))
-        paymentReason = input("Please enter the reason for payment: ")
-        PaymentMethod = input("Please enter the payment method (Cash, Debit, or Visa): ")
+        paymentReason = input("Please enter the reason for payment: ").title()
+        PaymentMethod = input("Please enter the payment method (Cash, Debit, or Visa): ").title()
 
         with open("Payments.dat", 'a') as file:
-            file.write(f"{new_payment_Id} {DriverNumber} {PaymentDate} {PaymentAmount} {paymentReason} {PaymentMethod}\n")
+            file.write(f"{new_payment_Id}, {DriverNumber}, {PaymentDate}, {PaymentAmount}, {paymentReason}, {PaymentMethod}\n")
         
         print()
         print("Payment record successfully saved ...", end='\r')
@@ -446,7 +447,7 @@ def AutomaticCharge():
 # Main program
 while True:
     curr_date = datetime.datetime.today()
-    curr_date = curr_date.strftime("%Y-%m-%d")
+    # curr_date = curr_date.strftime("%Y-%m-%d")
     if curr_date.day == 1:      # if its the first of the month, run Automatic Charge function
         AutomaticCharge()
     print()
