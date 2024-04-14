@@ -229,7 +229,7 @@ def TrackCarRentals():
     #User Inputs    
     while True:
         while True:
-            RentalID = input("Please enter the Rental ID (END to quit): ").upper()
+            RentalID = input("Please enter the Rental ID: ").upper()
             if RentalID == "":
                 print("Data Entry Error - Rental ID cannot be empty.")
             else:
@@ -340,16 +340,15 @@ def TrackCarRentals():
 
         f.write("{}, ".format(str(new_payment_Id)))
         f.write("{}, ".format(str(RevDate)))
-        f.write("{}, ".format(str(RevType)))
+        f.write("{} - Car ".format(str(RevType)))
         f.write("{}, ".format(str(CarNum)))
         f.write("{}, ".format(str(DriverNum)))
-        f.write("{}, ".format(FV.FDollar0(RentCost)))
-        f.write("{}, ".format(FV.FDollar0(HST)))
-        f.write("{}\n".format(FV.FDollar0(Total)))
+        f.write("{}, ".format(FV.FDollar2(RentCost)))
+        f.write("{}, ".format(FV.FDollar2(HST)))
+        f.write("{}\n".format(FV.FDollar2(Total)))
  
         f.close()
- 
-        f = open('Employee.dat', 'a')
+
         with open('Employee.dat', 'r') as file:
             Employeelines = file.readlines()
             for lines in Employeelines:
@@ -363,6 +362,8 @@ def TrackCarRentals():
                     
                 else:
                     pass
+        with open('Employee.dat', 'a') as file:
+            file.writelines(lines)
 
                 
  
@@ -573,50 +574,50 @@ def PrintCompanyCarsReport():
             break
             
 # function to update revenue file on the first of the month
-def AutomaticCharge():
-    # get employee info w/r/t owned cars
-    employees = open('Employee.dat', 'r')
-    owned_counter = 0
-    emp_list = []
-    for employee in employees:   
-        entryLst = employee.split(",")
-        if entryLst[10] == "O":     # if an employee owns their car, add their emp number to the list
-            owned_counter += 1
-            emp_list.append(entryLst[11])
-    employees.close()
+# def AutomaticCharge():
+#     # get employee info w/r/t owned cars
+#     employees = open('Employee.dat', 'r')
+#     owned_counter = 0
+#     emp_list = []
+#     for employee in employees:   
+#         entryLst = employee.split(",")
+#         if entryLst[10] == "O":     # if an employee owns their car, add their emp number to the list
+#             owned_counter += 1
+#             emp_list.append(entryLst[11])
+#     employees.close()
 
-    # open revenue file to get last trans number
-    revenue = open('Revenue.dat', 'r')
-    for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
-        entryLst = entry.split(",")
-        last_trans_num = int(entryLst[0])
-    transaction_number = last_trans_num + 1
-    revenue.close()
+#     # open revenue file to get last trans number
+#     revenue = open('Revenue.dat', 'r')
+#     for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
+#         entryLst = entry.split(",")
+#         last_trans_num = int(entryLst[0])
+#     transaction_number = last_trans_num + 1
+#     revenue.close()
         
-    # append stand fee entries to revenue file
-    f = open('Revenue.dat', 'a')
-    for i in range(len(emp_list)):
-        revenue_entry_list = [
-            transaction_number,
-            curr_date,
-            "Monthly Stand Fees",
-            emp_list[i],
-            175.00,
-            26.25,
-            201.25
-        ]
-        transaction_number += 1
-        for i in range(len(revenue_entry_list)):        # put commas between each item
-            f.write("{}, ".format(str(revenue_entry_list[i])))
-        f.write("{}\n".format(str(revenue_entry_list[len(revenue_entry_list) - 1])))  # adds line break after each entry
+#     # append stand fee entries to revenue file
+#     f = open('Revenue.dat', 'a')
+#     for i in range(len(emp_list)):
+#         revenue_entry_list = [
+#             transaction_number,
+#             curr_date,
+#             "Monthly Stand Fees",
+#             emp_list[i],
+#             175.00,
+#             26.25,
+#             201.25
+#         ]
+#         transaction_number += 1
+#         for i in range(len(revenue_entry_list)):        # put commas between each item
+#             f.write("{}, ".format(str(revenue_entry_list[i])))
+#         f.write("{}\n".format(str(revenue_entry_list[len(revenue_entry_list) - 1])))  # adds line break after each entry
 
 
 # Main program
 while True:
-    curr_date = datetime.datetime.today()
-    curr_date = curr_date.strftime("%Y-%m-%d")
-    if curr_date.day == 14:      # if its the first of the month, run Automatic Charge function
-        AutomaticCharge()
+    # curr_date = datetime.datetime.today()
+    # curr_date = curr_date.strftime("%Y-%m-%d")
+    # if curr_date.day == 14:      # if its the first of the month, run Automatic Charge function
+    #     AutomaticCharge()
     print()
     print("       HAB Taxi Services ")
     print("     Company Services System")
