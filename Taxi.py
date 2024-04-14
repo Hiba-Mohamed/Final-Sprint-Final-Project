@@ -360,16 +360,21 @@ def TrackCarRentals():
         f.close()
  
         f = open('Employee.dat', 'a')
-        
-    
         with open('Employee.dat', 'r') as file:
             Employeelines = file.readlines()
             for lines in Employeelines:
-                if lines[0] == DriverNum:
-                    print(lines[-1])
-                    print(DriverNum)
+                lineDriverNum = lines.split()[0][:-1]
+                print(type(lineDriverNum))
+                if lineDriverNum == DriverNum:
+                    lineTotal = float(lines.split()[-1])
+                    print(lineTotal)
+                    print(type(lineTotal))
+                    lineTotal =  lineTotal + Total
+                    
                 else:
                     pass
+
+                
  
         f.close()
 
