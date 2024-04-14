@@ -349,29 +349,38 @@ def TrackCarRentals():
  
         f.close()
 
-        with open('Employee.dat', 'r') as file:
-            Employeelines = file.readlines()
-            for lines in Employeelines:
-                lineDriverNum = lines.split()[0][:-1]
-                print(type(lineDriverNum))
-                if lineDriverNum == DriverNum:
-                    lineTotal = float(lines.split()[-1])
-                    print(lineTotal)
-                    print(type(lineTotal))
-                    lineTotal =  lineTotal + Total
+        # with open('Employee.dat', 'r') as file:
+        #     Employeelines = file.readlines()
+        #     for lines in Employeelines:
+        #         lineDriverNum = lines.split()[0][:-1]
+        #         print(type(lineDriverNum))
+        #         if lineDriverNum == DriverNum:
+        #             lineTotal = float(lines.split()[-1])
+        #             print(lineTotal)
+        #             print(type(lineTotal))
+        #             lineTotal =  lineTotal + Total
                     
-                else:
-                    pass
-        with open('Employee.dat', 'a') as file:
-            file.writelines(lines)
+        #         else:
+        #             pass
+        # f.close()
 
-                
- 
-        f.close()
+        with open('Employee.dat', 'r') as file:
+            employee_lines = file.readlines()
+
+# Open the Employee.dat file in write mode to append the updated data
+        with open('Employee.dat', 'w') as file:
+            for line in employee_lines:
+                line_data = line.split()
+                line_driver_num = line_data[0][:-1]  # Extract driver number from the line
+                if line_driver_num == DriverNum:
+                # Convert the last field (total) to float, add Total to it, and convert back to string
+                    line_data[-1] = str(float(line_data[-1]) + Total)
+            # Write the modified line back to the file
+                file.write(' '.join(line_data) + '\n')
 
         Continue = input("Do you want to track another car rentals (Y/N): ").capitalize()
         if Continue == "Y":
-            print("You are all set to enter new driver's details.")
+            print("You are all set to track another car rentals details.")
             print()
         else:
             break
