@@ -596,7 +596,6 @@ def AutomaticCharge():
             CarType = line_data[16]  # Extract car type from the line
             CarType = CarType[:-1]
             if CarType == "O":
-                print(CarType)
                 # Convert the last field (total) to float, add monthly stand fee to it, and convert back to string
                 line_data[-1] = str(float(line_data[-1]) + 175.00)
             # Write the modified line back to the file
@@ -632,7 +631,7 @@ def AutomaticCharge():
 # Main program
 while True:
     curr_date = datetime.datetime.today()
-    if curr_date.day == 14:      # if its the first of the month, run Automatic Charge function
+    if curr_date.day == 1:      # if its the first of the month, run Automatic Charge function
         AutomaticCharge()
     print()
     print("       HAB Taxi Services ")
