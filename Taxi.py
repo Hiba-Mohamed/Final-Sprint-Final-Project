@@ -583,50 +583,57 @@ def PrintCompanyCarsReport():
             break
             
 # function to update revenue file on the first of the month
-# def AutomaticCharge():
-#     # get employee info w/r/t owned cars
-#     employees = open('Employee.dat', 'r')
-#     owned_counter = 0
-#     emp_list = []
-#     for employee in employees:   
-#         entryLst = employee.split(",")
-#         if entryLst[10] == "O":     # if an employee owns their car, add their emp number to the list
-#             owned_counter += 1
-#             emp_list.append(entryLst[11])
-#     employees.close()
+def AutomaticCharge():
+    # get employee info w/r/t owned cars
+    with open('Employee.dat', 'r') as file:
+        employee_lines = file.readlines()
+        print(employee_lines)
 
-#     # open revenue file to get last trans number
-#     revenue = open('Revenue.dat', 'r')
-#     for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
-#         entryLst = entry.split(",")
-#         last_trans_num = int(entryLst[0])
-#     transaction_number = last_trans_num + 1
-#     revenue.close()
+# Open the Employee.dat file in write mode to append the updated data
+    with open('Employee.dat', 'w') as file:
+        for line in employee_lines:
+            line_data = line.split()
+            CarType = line_data[16]  # Extract car type from the line
+            CarType = CarType[:-1]
+            if CarType == "O":
+                print(CarType)
+                # Convert the last field (total) to float, add monthly stand fee to it, and convert back to string
+                line_data[-1] = str(float(line_data[-1]) + 175.00)
+            # Write the modified line back to the file
+            file.write(' '.join(line_data) + '\n')
+
+
+    # # open revenue file to get last trans number
+    # revenue = open('Revenue.dat', 'r')
+    # for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
+    #     entryLst = entry.split(",")
+    #     last_trans_num = int(entryLst[0])
+    # transaction_number = last_trans_num + 1
+    # revenue.close()
         
-#     # append stand fee entries to revenue file
-#     f = open('Revenue.dat', 'a')
-#     for i in range(len(emp_list)):
-#         revenue_entry_list = [
-#             transaction_number,
-#             curr_date,
-#             "Monthly Stand Fees",
-#             emp_list[i],
-#             175.00,
-#             26.25,
-#             201.25
-#         ]
-#         transaction_number += 1
-#         for i in range(len(revenue_entry_list)):        # put commas between each item
-#             f.write("{}, ".format(str(revenue_entry_list[i])))
-#         f.write("{}\n".format(str(revenue_entry_list[len(revenue_entry_list) - 1])))  # adds line break after each entry
+    # # append stand fee entries to revenue file
+    # f = open('Revenue.dat', 'a')
+    # for i in range(len(emp_list)):
+    #     revenue_entry_list = [
+    #         transaction_number,
+    #         curr_date,
+    #         "Monthly Stand Fees",
+    #         emp_list[i],
+    #         175.00,
+    #         26.25,
+    #         201.25
+    #     ]
+    #     transaction_number += 1
+    #     for i in range(len(revenue_entry_list)):        # put commas between each item
+    #         f.write("{}, ".format(str(revenue_entry_list[i])))
+    #     f.write("{}\n".format(str(revenue_entry_list[len(revenue_entry_list) - 1])))  # adds line break after each entry
 
 
 # Main program
 while True:
-    # curr_date = datetime.datetime.today()
-    # curr_date = curr_date.strftime("%Y-%m-%d")
-    # if curr_date.day == 14:      # if its the first of the month, run Automatic Charge function
-    #     AutomaticCharge()
+    curr_date = datetime.datetime.today()
+    if curr_date.day == 14:      # if its the first of the month, run Automatic Charge function
+        AutomaticCharge()
     print()
     print("       HAB Taxi Services ")
     print("     Company Services System")
