@@ -80,7 +80,7 @@ def EnterNewEmployee():
                 break
         PostCode = PostalCode[0] + PostalCode[1] + PostalCode[2] + PostalCode[3] + PostalCode[4] + PostalCode[5]
         
-        EmployeeAdd = StAddress + City + Prov + PostCode
+        EmployeeAdd = StAddress + " " + City + " " + Prov + " " + PostCode
 
         # Employee Phone Number
         while True:
@@ -155,7 +155,7 @@ def EnterNewEmployee():
         print(f" Driver ID:                 {NEXT_DRIVER_NUMBER - 1}")
         print(f" Employee Name:             {EmployeeName}")
         print(f" Employee Address:          {StAddress}")
-        print(f"                            {City} {Prov} {PostCode}")
+        print(f"                            {City}, {Prov}, {PostCode}")
         print(f" Phone:                     {EmployeePhone}")
         print()
         print(f" License Number:            {LicenseNum:<10s}")
