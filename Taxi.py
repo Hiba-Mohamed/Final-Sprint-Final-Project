@@ -155,7 +155,7 @@ def EnterNewEmployee():
         print(f" Driver ID:                 {NEXT_DRIVER_NUMBER - 1}")
         print(f" Employee Name:             {EmployeeName}")
         print(f" Employee Address:          {StAddress}")
-        print(f"                            {City + "," + " " + Prov + "," + " " + PostCode}")
+        print(f"                            {City} {Prov} {PostCode}")
         print(f" Phone:                     {EmployeePhone}")
         print()
         print(f" License Number:            {LicenseNum:<10s}")
@@ -223,8 +223,137 @@ def EnterCompanyExpense():
     pass
 
 def TrackCarRentals():
+   
+    f = open('Defaults.dat', 'r')
+ 
+    NEXT_TRANSACTION_NUMBER = int(f.readline())   #143
+    NEXT_DRIVER_NUMBER = int(f.readline())      #1922
+    MONTHLY_STAND_FEE = float(f.readline())       #175.00
+    DAILY_RENTAL_FEE = float(f.readline())       #60.00
+    WEEKLY_RENTAL_FEE = float(f.readline())      #300.00
+    HST_RATE = float(f.readline())
+    
+    #User Inputs    
     while True:
-        break
+ 
+        RentalID = input("Please enter the Rental ID (END to quit): ").upper()
+        if RentalID == "END":
+            break
+       
+        DriverNum = input("Please ener the employee's Driver Number: ")
+       
+        while True:
+            CarNum = input("Enter a number (1, 2, 3, or 4): ")
+            if CarNum not in ['1', '2', '3', '4']:
+                print("Invalid Input. Car number must be entered as 1,2,3 or 4")                
+            else:
+                break
+           
+        while True:
+            StartDate = input("Enter start date (YYYY-MM-DD): ")
+            try:
+                StartDate = datetime.datetime.strptime(StartDate, "%Y-%m-%d")
+                break  
+            except ValueError:
+                print("Invalid date format. Please enter date in YYYY-MM-DD format.")
+       
+       
+       # Inputting and validating the Rental type
+        while True:
+            RentType = input("Enter rental type (D for Daily, W for Weekly): ").upper()
+            if RentType == "D" or RentType == "W":
+               break
+            else:  
+                print ("Invalid input. Please enter D for daily or W for weekly")
+        if RentType == "D":
+            while True:
+                RentDur = int(input("Please input the number of Days the car will be rented for: "))
+                if RentDur > 6:
+                    print("Invalid input. Number of days cannot exceed 6")
+                else:
+                    break
+        elif RentType == "W":
+            RentDur = 7
+           
+        if RentType == "D":
+            RentCost = DAILY_RENTAL_FEE * RentDur  
+        elif RentType == "W":
+            RentCost = WEEKLY_RENTAL_FEE  
+ 
+        HST = RentCost * HST_RATE
+ 
+        Total = RentCost + HST
+        ReturnDate = StartDate = StartDate.replace(day=StartDate.day + RentDur)
+        if RentType == "D":
+            RevType = "Daily Rental"
+        elif RentType == "W":
+            RevType = "Weekly Rental"
+ 
+ 
+        print()
+        print(f"            HAB TAXI SERVICES - CAR RENTALS")
+        print(f"---------------------------------------------------------")
+        print()
+        print(f" Driver ID:                                           {DriverNum}")
+        print(f" Rental ID:                                           {RentalID}")
+        print(f" Car Number                                              {CarNum}")
+        print(f" ")                        
+        print(f"Start Date:                                      {FV.FDateM(StartDate)}")  
+        print(f"Return Date:                                     {FV.FDateM(ReturnDate)}")                  
+        print(f"Rental Type (Daily/Weekly):                              {RentType}")  
+        print(f"Rental Duration:                                         {RentDur}")  
+        print()
+        print(f"-----------------------------------------------------------")
+        print(f"Rental Fee:                                     {FV.FDollar0(RentCost):>10s}")  
+        print(f"HST:                                            {FV.FDollar0(HST):>10s}")  
+        print(f"Total Cost:                                     {FV.FDollar0(Total):>10s}")    
+       
+       
+        print()
+ 
+    f = open('Defaults.dat', 'w')
+       
+    f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
+    f.write("{}\n".format(str(NEXT_DRIVER_NUMBER)))
+    f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
+    f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
+    f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
+    f.write("{}\n".format(str(HST_RATE)))
+    f.close()
+   
+    WriteDate = FV.FDateM(StartDate)
+    WriteCost =FV.FDollar0(RentCost)
+    WriteHST =FV.FDollar0(HST)
+    WriteTotal =FV.FDollar0(Total)
+
+
+    #Writing results to the Rentals Data file
+    f = open('Rentals.dat', 'w')
+   
+    f.write(f'{DriverNum},{RentalID},{CarNum},{RevType},{WriteDate},{WriteCost},{WriteHST},{WriteTotal}')  
+    f.close()
+    RevDate = StartDate.strftime("%Y-%m-%d")
+    f = open('Revenue.dat', 'r')
+    with open('Revenue.dat', 'a') as file:
+        lines = file.readlines()
+        print(lines)
+        NewRent = lines[0] + 1
+        f.write(f'{NewRent},{RevDate},{RevType}, - Car {CarNum}, {DriverNum},{FV.FDollar0(RentCost)},{FV.FDollar0(HST)},{FV.FDollar0(Total)}')
+ 
+    f.close()
+ 
+    f = open('Employee.dat', 'a')
+ 
+ 
+    with open('Employee.dat', 'r') as file:
+        Employeelines = file.readlines()
+        for lines in Employeelines:
+            if lines[0] == DriverNum:
+                lines[-1] += Total
+            else:
+                pass
+ 
+    f.close()
 
 def RecordEmployeePayment():
     while True:
