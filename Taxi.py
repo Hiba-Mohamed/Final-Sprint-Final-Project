@@ -423,7 +423,7 @@ def PrintCompanyCarsReport():
 # function to update revenue file on the first of the month
 def AutomaticCharge():
     # get employee info w/r/t owned cars
-    employees = open("employee.dat", "r")
+    employees = open('Employee.dat', 'r')
     owned_counter = 0
     emp_list = []
     for employee in employees:   
@@ -434,7 +434,7 @@ def AutomaticCharge():
     employees.close()
 
     # open revenue file to get last trans number
-    revenue = open("revenue.dat", "r")
+    revenue = open('Revenue.dat', 'r')
     for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
         entryLst = entry.split(",")
         last_trans_num = int(entryLst[0])
@@ -442,7 +442,7 @@ def AutomaticCharge():
     revenue.close()
         
     # append stand fee entries to revenue file
-    f = open("revenue.dat", "a")
+    f = open('Revenue.dat', 'a')
     for i in range(len(emp_list)):
         revenue_entry_list = [
             transaction_number,
@@ -463,7 +463,7 @@ def AutomaticCharge():
 while True:
     curr_date = datetime.datetime.today()
     # curr_date = curr_date.strftime("%Y-%m-%d")
-    if curr_date.day == 1:      # if its the first of the month, run Automatic Charge function
+    if curr_date.day == 14:      # if its the first of the month, run Automatic Charge function
         AutomaticCharge()
     print()
     print("       HAB Taxi Services ")
