@@ -230,21 +230,20 @@ def TrackCarRentals():
     while True:
         while True:
             RentalID = input("Please enter the Rental ID (END to quit): ").upper()
-            if RentalID == "END":
-                break
+            if RentalID == "":
+                print("Data Entry Error - Rental ID cannot be empty.")
             else:
                 break
-        
+            
         DriverNum = input("Please ener the employee's Driver Number: ")
-        
+            
         while True:
                 CarNum = input("Enter a number (1, 2, 3, or 4): ")
                 if CarNum not in ['1', '2', '3', '4']:
                     print("Invalid Input. Car number must be entered as 1,2,3 or 4")                
                 else:
                     break
-            
-            
+                  
         while True:
             StartDate = input("Enter start date (YYYY-MM-DD): ")
             try:
@@ -252,13 +251,13 @@ def TrackCarRentals():
                 break  
             except ValueError:
                 print("Invalid date format. Please enter date in YYYY-MM-DD format.")
-       
-       
+        
+        
        # Inputting and validating the Rental type
         while True:
             RentType = input("Enter rental type (D for Daily, W for Weekly): ").upper()
             if RentType == "D" or RentType == "W":
-               break
+                break
             else:  
                 print ("Invalid input. Please enter D for daily or W for weekly")
         if RentType == "D":
@@ -269,7 +268,7 @@ def TrackCarRentals():
                 else:
                     break
         elif RentType == "W":
-            RentDur = 7
+                    RentDur = 7
            
         if RentType == "D":
             RentCost = DAILY_RENTAL_FEE * RentDur  
@@ -307,15 +306,15 @@ def TrackCarRentals():
        
         print()
  
-        f = open('Defaults.dat', 'w')
+        # f = open('Defaults.dat', 'w')
         
-        f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
-        f.write("{}\n".format(str(NEXT_DRIVER_NUMBER)))
-        f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
-        f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
-        f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
-        f.write("{}\n".format(str(HST_RATE)))
-        f.close()
+        # f.write("{}\n".format(str(NEXT_TRANSACTION_NUMBER)))
+        # f.write("{}\n".format(str(NEXT_DRIVER_NUMBER)))
+        # f.write("{}\n".format(str(MONTHLY_STAND_FEE)))
+        # f.write("{}\n".format(str(DAILY_RENTAL_FEE)))
+        # f.write("{}\n".format(str(WEEKLY_RENTAL_FEE)))
+        # f.write("{}\n".format(str(HST_RATE)))
+        # f.close()
    
         WriteDate = FV.FDateM(StartDate)
         WriteCost =FV.FDollar0(RentCost)
@@ -324,7 +323,7 @@ def TrackCarRentals():
 
 
         #Writing results to the Rentals Data file
-        f = open('Rentals.dat', 'w')
+        f = open('Rentals.dat', 'a')
 
         f.write("{}, ".format(str(DriverNum)))
         f.write("{}, ".format(str(RentalID)))
@@ -333,42 +332,53 @@ def TrackCarRentals():
         f.write("{}, ".format(str(WriteDate)))
         f.write("{}, ".format(str(WriteCost)))
         f.write("{}, ".format(str(WriteHST)))
-        f.write("{}\n ".format(str(WriteTotal)))
-
-        # f.write(f'{DriverNum}, {RentalID}, {CarNum}, {RevType}, {WriteDate}, {WriteCost}, {WriteHST}, {WriteTotal}')  
+        f.write("{}\n".format(str(WriteTotal)))
+ 
 
         f.close()
         RevDate = StartDate.strftime("%Y-%m-%d")
-        # f = open('Revenue.dat', 'r')
-        with open('Revenue.dat', 'a') as file:
-            lines = file.readlines()
-            print(lines)
-            NewRent = lines[0] + 1
 
-            f.write("{}, ".format(str(NewRent)))
-            f.write("{}, ".format(str(RevDate)))
-            f.write("{}, ".format(str(RevType)))
-            f.write("{}, ".format(str(CarNum)))
-            f.write("{}, ".format(str(DriverNum)))
-            f.write("{}, ".format(FV.FDollar0(RentCost)))
-            f.write("{}, ".format(FV.FDollar0(HST)))
-            f.write("{}, ".format(FV.FDollar0(Total)))
-        # f.write(f'{NewRent},{RevDate},{RevType}, - Car {CarNum}, {DriverNum},{FV.FDollar0(RentCost)},{FV.FDollar0(HST)},{FV.FDollar0(Total)}')
+        f = open('Revenue.dat', 'a')
+        # Read the last car ID from the file
+        with open("Revenue.dat", 'r') as file:
+            lines = file.readlines()
+            # print(lines)
+            # this is the last line and the first entry with index 0 (the carID)
+            last_payment_Id = lines[-1].split()[0]
+            # add 1 to the latest carID to make it the new car id then turn it to a string
+            new_payment_Id = str(int(last_payment_Id[:-1]) + 1)
+
+        f.write("{}, ".format(str(new_payment_Id)))
+        f.write("{}, ".format(str(RevDate)))
+        f.write("{}, ".format(str(RevType)))
+        f.write("{}, ".format(str(CarNum)))
+        f.write("{}, ".format(str(DriverNum)))
+        f.write("{}, ".format(FV.FDollar0(RentCost)))
+        f.write("{}, ".format(FV.FDollar0(HST)))
+        f.write("{}\n".format(FV.FDollar0(Total)))
  
         f.close()
  
         f = open('Employee.dat', 'a')
-    
+        
     
         with open('Employee.dat', 'r') as file:
             Employeelines = file.readlines()
             for lines in Employeelines:
                 if lines[0] == DriverNum:
-                    lines[-1] += Total
+                    print(lines[-1])
+                    print(DriverNum)
                 else:
                     pass
  
         f.close()
+
+        Continue = input("Do you want to track another car rentals (Y/N): ").capitalize()
+        if Continue == "Y":
+            print("You are all set to enter new driver's details.")
+            print()
+        else:
+            break
 
         WriteDefaults(NEXT_TRANSACTION_NUMBER, NEXT_DRIVER_NUMBER, MONTHLY_STAND_FEE, DAILY_RENTAL_FEE, WEEKLY_RENTAL_FEE, HST_RATE)
         
@@ -568,50 +578,50 @@ def PrintCompanyCarsReport():
             break
             
 # function to update revenue file on the first of the month
-def AutomaticCharge():
-    # get employee info w/r/t owned cars
-    employees = open('Employee.dat', 'r')
-    owned_counter = 0
-    emp_list = []
-    for employee in employees:   
-        entryLst = employee.split(",")
-        if entryLst[11] == "O":     # if an employee owns their car, add their emp number to the list
-            owned_counter += 1
-            emp_list.append(entryLst[3])
-    employees.close()
+# def AutomaticCharge():
+#     # get employee info w/r/t owned cars
+#     employees = open('Employee.dat', 'r')
+#     owned_counter = 0
+#     emp_list = []
+#     for employee in employees:   
+#         entryLst = employee.split(",")
+#         if entryLst[11] == "O":     # if an employee owns their car, add their emp number to the list
+#             owned_counter += 1
+#             emp_list.append(entryLst[3])
+#     employees.close()
 
-    # open revenue file to get last trans number
-    revenue = open('Revenue.dat', 'r')
-    for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
-        entryLst = entry.split(",")
-        last_trans_num = int(entryLst[0])
-    transaction_number = last_trans_num + 1
-    revenue.close()
+#     # open revenue file to get last trans number
+#     revenue = open('Revenue.dat', 'r')
+#     for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
+#         entryLst = entry.split(",")
+#         last_trans_num = int(entryLst[0])
+#     transaction_number = last_trans_num + 1
+#     revenue.close()
         
-    # append stand fee entries to revenue file
-    f = open('Revenue.dat', 'a')
-    for i in range(len(emp_list)):
-        revenue_entry_list = [
-            transaction_number,
-            curr_date,
-            "Monthly Stand Fees",
-            emp_list[i],
-            175.00,
-            26.25,
-            201.25
-        ]
-        transaction_number += 1
-        for i in range(len(revenue_entry_list)):        # put commas between each item
-            f.write("{}, ".format(str(revenue_entry_list[i])))
-        f.write("{}\n".format(str(revenue_entry_list[len(revenue_entry_list) - 1])))  # adds line break after each entry
+#     # append stand fee entries to revenue file
+#     f = open('Revenue.dat', 'a')
+#     for i in range(len(emp_list)):
+#         revenue_entry_list = [
+#             transaction_number,
+#             curr_date,
+#             "Monthly Stand Fees",
+#             emp_list[i],
+#             175.00,
+#             26.25,
+#             201.25
+#         ]
+#         transaction_number += 1
+#         for i in range(len(revenue_entry_list)):        # put commas between each item
+#             f.write("{}, ".format(str(revenue_entry_list[i])))
+#         f.write("{}\n".format(str(revenue_entry_list[len(revenue_entry_list) - 1])))  # adds line break after each entry
 
 
 # Main program
 while True:
     curr_date = datetime.datetime.today()
     # curr_date = curr_date.strftime("%Y-%m-%d")
-    if curr_date.day == 14:      # if its the first of the month, run Automatic Charge function
-        AutomaticCharge()
+    # if curr_date.day == 14:      # if its the first of the month, run Automatic Charge function
+    #     AutomaticCharge()
     print()
     print("       HAB Taxi Services ")
     print("     Company Services System")
