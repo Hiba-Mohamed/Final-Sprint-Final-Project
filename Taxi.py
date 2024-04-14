@@ -349,21 +349,6 @@ def TrackCarRentals():
  
         f.close()
 
-        # with open('Employee.dat', 'r') as file:
-        #     Employeelines = file.readlines()
-        #     for lines in Employeelines:
-        #         lineDriverNum = lines.split()[0][:-1]
-        #         print(type(lineDriverNum))
-        #         if lineDriverNum == DriverNum:
-        #             lineTotal = float(lines.split()[-1])
-        #             print(lineTotal)
-        #             print(type(lineTotal))
-        #             lineTotal =  lineTotal + Total
-                    
-        #         else:
-        #             pass
-        # f.close()
-
         with open('Employee.dat', 'r') as file:
             employee_lines = file.readlines()
 
