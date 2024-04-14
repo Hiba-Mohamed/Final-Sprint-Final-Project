@@ -118,7 +118,7 @@ def EnterNewEmployee():
             elif CarType not in CarLst:
                 print("Data Entry Error - invalid entry.") 
             elif CarType == "R":
-                NumDays = input("Enter the number of days car is rented for: ")
+                NumDays = input("Enter the number of days car is rented for (b/w 1 and 7 only): ")
                 NumDays = int(NumDays)
                 break
             else:
