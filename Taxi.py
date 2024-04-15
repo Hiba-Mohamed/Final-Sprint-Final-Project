@@ -572,7 +572,7 @@ def PrintCompanyCarsReport():
 
 def IsFirstToday():
     today = datetime.datetime.today()
-    return today.day == 1
+    return today.day == 14
 
 def LastUpdateDate():
     # Read the last update date from a file
@@ -585,6 +585,8 @@ def LastUpdateDate():
     return last_update
 
 def update_employee_data():
+    updated_driver_numbers = []  # Initialize an empty list to store updated driver numbers
+
     with open('Employee.dat', 'r') as file:
         employee_lines = file.readlines()
 
@@ -595,8 +597,13 @@ def update_employee_data():
             CarType = line_data[16]  # Extract car type from the line
             CarType = CarType[:-1]
             if CarType == "O":
+                # Collect the driver number before updating
+                driver_number = line_data[0][:-1]
+                updated_driver_numbers.append(driver_number)
+                
                 # Convert the last field (total) to float, add monthly stand fee to it, and convert back to string
                 line_data[-1] = str(float(line_data[-1]) + 175.00)
+                
             # Write the modified line back to the file
             file.write(' '.join(line_data) + '\n')
 
@@ -604,6 +611,26 @@ def update_employee_data():
     with open('LastUpdate.dat', 'w') as file:
         file.write(datetime.datetime.today().strftime('%Y-%m-%d'))
 
+    update_revenue_data(updated_driver_numbers)
+
+def update_revenue_data(updates_driver_numbers):
+    NEXT_TRANSACTION_NUMBER, NEXT_DRIVER_NUMBER, MONTHLY_STAND_FEE, DAILY_RENTAL_FEE, WEEKLY_RENTAL_FEE, HST_RATE = ReadDefaults()
+    for driver in updates_driver_numbers:
+                print(driver)
+                Taxes = MONTHLY_STAND_FEE * HST_RATE
+                Total = MONTHLY_STAND_FEE + Taxes
+                f = open('Revenue.dat', 'a')
+                # Read the last car ID from the file
+                with open("Revenue.dat", 'r') as file:
+                    lines = file.readlines()
+                    # print(lines)
+                    # this is the last line and the first entry with index 0 (the carID)
+                    last_payment_Id = lines[-1].split()[0]
+                    # add 1 to the latest carID to make it the new car id then turn it to a string
+                    new_payment_Id = str(int(last_payment_Id[:-1]) + 1)
+                f.write("{}, {}, Monthly Stand Fees, {}, {}, {}, {}\n".format(new_payment_Id, FV.FDateS(TODAY), driver, MONTHLY_STAND_FEE, Taxes, Total))
+        
+                f.close()
 
 # Main program
 while True:
