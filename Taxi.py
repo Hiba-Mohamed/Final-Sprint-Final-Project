@@ -608,11 +608,18 @@ def update_employee_data():
 # Main program
 while True:
     if IsFirstToday() and LastUpdateDate().month != datetime.datetime.today().month:
+        for _ in range(5):  # Change to control no. of 'blinks'
+            print('1st day of the month... so Updating Balance Due in Employee file ...', end='\r')
+            time.sleep(.3)  # To create the blinking effect
+            sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
+            time.sleep(.3)
+        
         update_employee_data()
-        print("Balance Due is updated")
-    # curr_date = datetime.datetime.today()
-    # if curr_date.day == 14 and curr_date.hour >= 0:      # if its the first of the month, run Automatic Charge function
-    #     AutomaticCharge()
+        
+        print()
+        print("Employee data successfully saved ...", end='\r')
+        time.sleep(1)  # To create the blinking effect
+        sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
     print()
     print("       HAB Taxi Services ")
     print("     Company Services System")
