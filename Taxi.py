@@ -379,7 +379,6 @@ def RecordEmployeePayment():
         # Read the last car ID from the file
         with open("Payments.dat", 'r') as file:
             lines = file.readlines()
-            print(lines)
             # this is the last line and the first entry with index 0 (the carID)
             last_payment_Id = lines[-1].split()[0]
             # add 1 to the latest carID to make it the new car id then turn it to a string
@@ -616,7 +615,6 @@ def update_employee_data():
 def update_revenue_data(updates_driver_numbers):
     NEXT_TRANSACTION_NUMBER, NEXT_DRIVER_NUMBER, MONTHLY_STAND_FEE, DAILY_RENTAL_FEE, WEEKLY_RENTAL_FEE, HST_RATE = ReadDefaults()
     for driver in updates_driver_numbers:
-                print(driver)
                 Taxes = MONTHLY_STAND_FEE * HST_RATE
                 Total = MONTHLY_STAND_FEE + Taxes
                 f = open('Revenue.dat', 'a')
