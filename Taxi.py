@@ -567,14 +567,28 @@ def PrintCompanyCarsReport():
         if NewCar == "END":
             break
             
-# function to update revenue file on the first of the month
-def AutomaticCharge():
-    # get employee info w/r/t owned cars
+# function to update employee file on the first of the month
+
+
+def IsFirstToday():
+    today = datetime.datetime.today()
+    return today.day == 1
+
+def LastUpdateDate():
+    # Read the last update date from a file
+    try:
+        with open('LastUpdate.dat', 'r') as file:
+            last_update = datetime.datetime.strptime(file.read().strip(), '%Y-%m-%d')
+    except FileNotFoundError:
+        # If the file doesn't exist yet, return a default date
+        return datetime.datetime.min
+    return last_update
+
+def update_employee_data():
     with open('Employee.dat', 'r') as file:
         employee_lines = file.readlines()
-        print(employee_lines)
 
-# Open the Employee.dat file in write mode to append the updated data
+    # Update the data
     with open('Employee.dat', 'w') as file:
         for line in employee_lines:
             line_data = line.split()
@@ -586,38 +600,26 @@ def AutomaticCharge():
             # Write the modified line back to the file
             file.write(' '.join(line_data) + '\n')
 
-
-    # # open revenue file to get last trans number
-    # revenue = open('Revenue.dat', 'r')
-    # for entry in revenue:   # for loop to get to the last line of the file (aka most recent entry)
-    #     entryLst = entry.split(",")
-    #     last_trans_num = int(entryLst[0])
-    # transaction_number = last_trans_num + 1
-    # revenue.close()
-        
-    # # append stand fee entries to revenue file
-    # f = open('Revenue.dat', 'a')
-    # for i in range(len(emp_list)):
-    #     revenue_entry_list = [
-    #         transaction_number,
-    #         curr_date,
-    #         "Monthly Stand Fees",
-    #         emp_list[i],
-    #         175.00,
-    #         26.25,
-    #         201.25
-    #     ]
-    #     transaction_number += 1
-    #     for i in range(len(revenue_entry_list)):        # put commas between each item
-    #         f.write("{}, ".format(str(revenue_entry_list[i])))
-    #     f.write("{}\n".format(str(revenue_entry_list[len(revenue_entry_list) - 1])))  # adds line break after each entry
+    # Record the update date
+    with open('LastUpdate.dat', 'w') as file:
+        file.write(datetime.datetime.today().strftime('%Y-%m-%d'))
 
 
 # Main program
 while True:
-    curr_date = datetime.datetime.today()
-    if curr_date.day == 1:      # if its the first of the month, run Automatic Charge function
-        AutomaticCharge()
+    if IsFirstToday() and LastUpdateDate().month != datetime.datetime.today().month:
+        for _ in range(5):  # Change to control no. of 'blinks'
+            print('1st day of the month... so Updating Balance Due in Employee file ...', end='\r')
+            time.sleep(.3)  # To create the blinking effect
+            sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
+            time.sleep(.3)
+        
+        update_employee_data()
+        
+        print()
+        print("Employee data successfully saved ...", end='\r')
+        time.sleep(1)  # To create the blinking effect
+        sys.stdout.write('\033[2K\r')  # Clears the entire line and carriage returns
     print()
     print("       HAB Taxi Services ")
     print("     Company Services System")
