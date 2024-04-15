@@ -343,9 +343,9 @@ def TrackCarRentals():
         f.write("{} - Car ".format(str(RevType)))
         f.write("{}, ".format(str(CarNum)))
         f.write("{}, ".format(str(DriverNum)))
-        f.write("{}, ".format(FV.FDollar2(RentCost)))
-        f.write("{}, ".format(FV.FDollar2(HST)))
-        f.write("{}\n".format(FV.FDollar2(Total)))
+        f.write("{}, ".format(RentCost))
+        f.write("{}, ".format(HST))
+        f.write("{}\n".format(Total))
  
         f.close()
 
