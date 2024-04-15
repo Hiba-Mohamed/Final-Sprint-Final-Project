@@ -571,7 +571,7 @@ def PrintCompanyCarsReport():
 
 def IsFirstToday():
     today = datetime.datetime.today()
-    return today.day == 14
+    return today.day == 1
 
 def LastUpdateDate():
     # Read the last update date from a file
